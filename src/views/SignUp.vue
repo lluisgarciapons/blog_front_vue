@@ -21,6 +21,13 @@
               >
               </v-text-field>
               <v-text-field
+                v-model="username"
+                :rules="[rules.required]"
+                label="Choose Username"
+                clearable
+              >
+              </v-text-field>
+              <v-text-field
                 v-model="email"
                 :rules="[rules.required, rules.email]"
                 label="E-mail"
@@ -76,11 +83,13 @@
 </template>
 
 <script>
+  import axios from "axios";
   export default {
     data() {
       return {
         name: "",
         email: "",
+        username: "",
         rules: {
           required: value => !!value || "Required.",
           counter: value => value.length >= 6 || "Min 6 characters",
@@ -99,7 +108,27 @@
     },
     methods: {
       signUp: function() {
-        this.$store.dispatch("login");
+        console.log("signup");
+        let body = {
+          username: this.username,
+          password: this.password,
+          passwordConfirmation: this.password2
+        };
+        axios({
+          method: "POST",
+          url: "https://quiet-savannah-72383.herokuapp.com/register",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          data: body
+        })
+          .then(res => {
+            console.log(res);
+            // this.$store.dispatch("login");
+          })
+          .catch(err => {
+            console.log(err);
+          });
       }
     }
   };

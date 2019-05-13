@@ -94,8 +94,15 @@
           this.imageUrl = "";
         }
       },
-      submit: () => {
+      submit() {
         //submit post
+        console.log(this);
+        let newPost = {
+          title: this.title,
+          content: this.body,
+          image: this.imageFile
+        };
+        this.$store.dispatch("post", newPost);
       }
     },
     computed: {}

@@ -30,7 +30,8 @@ export default new Router({
     {
       path: '/newPost',
       name: 'newPost',
-      component: () => import('./views/NewPost.vue')
+      component: () => import('./views/NewPost.vue'),
+      meta: { requiresLogin: true }
     }
   ]
 });

@@ -38,12 +38,20 @@
       justify-space-around
       class="card-row"
     >
+      <div v-if="posts.loading">
+        <!-- Loading posts... -->
+        <img src="../../public/images/loader.gif" />
+      </div>
+      <div v-else-if="!posts.payload.length > 0">
+        No posts available
+      </div>
       <v-flex
+        v-else
         md8
         sm10
         xs12
         class="card"
-        v-for="(post, index) in posts"
+        v-for="(post, index) in posts.payload"
         :key="index"
         :ref="`card_${index}`"
         @mouseover="hoverCard(index)"
@@ -53,18 +61,18 @@
         <img
           class="card-image"
           :class="{'selected': isSelected(index)}"
-          :src="post.image"
+          :src="`https://quiet-savannah-72383.herokuapp.com${post.image}`"
         >
 
         <div
           class="card-footer"
           :class="{'selected': isSelected(index)}"
         >
-          <p
-            class="card-text"
+
+          <h3
+            class="card-title"
             :class="{'selected': isSelected(index)}"
-          >RECIPE</p>
-          <h3 class="card-title">{{post.title}}</h3>
+          >{{post.title}}</h3>
           <p
             v-show="isSelected(index)"
             class="text-body"
@@ -99,7 +107,7 @@
   export default {
     data() {
       return {
-        posts: [],
+        posts: {},
         cards: [
           {
             title: "Gooey PBJ Brownies",
@@ -179,6 +187,7 @@
   .card-footer {
     position: absolute;
     bottom: 0;
+    width: 100%;
     // height: 130px;
     padding: 10px 15px;
     font-family: Helvetica;
@@ -192,7 +201,9 @@
     font-size: 14px;
     color: rgb(27, 27, 27);
     opacity: 0.7;
-    transition: font-size 0.3s, opacity 0.3s, color 0.3s;
+    // transition: font-size 0.3s, opacity 0.3s, color 0.3s;
+    transition: 0.3;
+    width: 100%;
   }
   .card-text.selected {
     font-size: 30px;
@@ -201,7 +212,14 @@
     // color: white;
   }
   .card-title {
+    font-size: 55px;
     font-family: Serif;
+    transition: font-size 0.3s, opacity 0.3s, color 0.3s;
+    // transition: 0.3s;
+  }
+  .card-title.selected {
+    font-size: 40px;
+    color: rgb(70, 70, 70);
   }
   .card-author {
     font-size: 14px;

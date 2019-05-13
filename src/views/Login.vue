@@ -13,6 +13,13 @@
           >
             <h2>LOGIN</h2>
             <v-text-field
+              v-model="username"
+              :rules="[rules.required]"
+              label="Choose Username"
+              clearable
+            >
+            </v-text-field>
+            <v-text-field
               v-model="email"
               :rules="[rules.required, rules.email]"
               label="E-mail"
@@ -60,6 +67,7 @@
     data() {
       return {
         email: "",
+        username: "",
         rules: {
           required: value => !!value || "Required.",
           counter: value => value.length >= 6 || "Min 6 characters",
@@ -77,7 +85,11 @@
     },
     methods: {
       logIn: function() {
-        this.$store.dispatch("login");
+        let payload = {
+          username: this.username,
+          password: this.password
+        };
+        this.$store.dispatch("login", payload);
       }
     }
   };
